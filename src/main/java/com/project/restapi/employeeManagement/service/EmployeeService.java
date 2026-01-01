@@ -125,6 +125,8 @@ public class EmployeeService {
             throw new EmailAlreadyExistsException("Email already exists.");
         }
 
-        return EmployeeMapper.publicToResponse(empRepository.save(employee));
+        Employee updateEmployee = EmployeeMapper.publicFromUpdateRequest(employee, publicUpdateRequest);
+        Employee saveUpdatedEmployee = empRepository.save(updateEmployee);
+        return EmployeeMapper.publicToResponse(saveUpdatedEmployee);
     }
 }
