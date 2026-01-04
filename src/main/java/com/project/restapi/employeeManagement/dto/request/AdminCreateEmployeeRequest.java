@@ -1,19 +1,21 @@
 package com.project.restapi.employeeManagement.dto.request;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 public class AdminCreateEmployeeRequest {
-    @NotBlank
+    @NotBlank(message = "Name is required!")
     private String name;
 
-    private Integer age;
+    private int age;
 
-    @NotBlank
+    @NotBlank(message = "Position is required!")
     private String position;
 
     private Double salary;
 
-    @NotBlank
+    @Email(message = "Email must be valid!")
+    @NotBlank(message = "Email is required!")
     private String email;
 
     private boolean isActive;
@@ -38,7 +40,7 @@ public class AdminCreateEmployeeRequest {
         return age;
     }
 
-    public void setAge(Integer age) {
+    public void setAge(int age) {
         this.age = age;
     }
 

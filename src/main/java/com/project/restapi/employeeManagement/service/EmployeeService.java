@@ -53,6 +53,11 @@ public class EmployeeService {
     //Bulk
     @Transactional
     public List<AdminEmployeeResponse> createEmployee_AdminBulk(List<AdminCreateEmployeeRequest> createRequest) {
+
+        if (empRepository.existsEmpByEmail(createRequest.getFirst().getEmail())) {
+            throw new EmailAlreadyExistsException("Email already exists.");
+        }
+
         List<Employee> employee = EmployeeMapper.AdminFromCreateRequestList(createRequest);
         List<Employee> save = empRepository.saveAll(employee);
 

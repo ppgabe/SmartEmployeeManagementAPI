@@ -1,14 +1,19 @@
 package com.project.restapi.employeeManagement.dto.request;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 public class PublicUpdateEmployeeRequest {
-    @NotBlank
+    @NotBlank(message = "Name must not be null!")
     private String name;
+
     private int age;
-    @NotBlank
+
+    @Email(message = "Email must be valid!")
+    @NotBlank(message = "Email must not be null!")
     private String email;
-    @NotBlank
+
+    @NotBlank(message = "Position must not be null!")
     private String position;
 
     public String getName() {
