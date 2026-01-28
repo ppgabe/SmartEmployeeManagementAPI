@@ -154,7 +154,8 @@ class EmployeeApiTest extends AbstractIntegrationTest {
                     String.class
                 );
 
-                assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+                // Invalid ages now get a proper BAD_REQUEST response
+                assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
             }
 
             @DisplayName("when position is invalid")
@@ -320,8 +321,8 @@ class EmployeeApiTest extends AbstractIntegrationTest {
                     String.class
                 );
 
-                // TODO: Refactor to return proper status code (HttpStatus.BAD_REQUEST - 400)
-                assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+                // Invalid ages now get a proper BAD_REQUEST response
+                assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
             }
 
             @DisplayName("when position is invalid")
