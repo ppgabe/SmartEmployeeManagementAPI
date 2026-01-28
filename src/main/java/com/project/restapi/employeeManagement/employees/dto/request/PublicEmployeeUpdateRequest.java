@@ -1,7 +1,6 @@
-package com.project.restapi.employeeManagement.dto.request;
+package com.project.restapi.employeeManagement.employees.dto.request;
 
-import com.project.restapi.employeeManagement.entity.Employee;
-import com.project.restapi.employeeManagement.entity.PublicEmployee;
+import com.project.restapi.employeeManagement.employees.entities.PublicEmployee;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

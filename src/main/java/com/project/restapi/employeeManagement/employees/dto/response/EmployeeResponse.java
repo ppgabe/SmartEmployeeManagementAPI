@@ -1,4 +1,4 @@
-package com.project.restapi.employeeManagement.dto.response;
+package com.project.restapi.employeeManagement.employees.dto.response;
 
 public sealed interface EmployeeResponse permits AdminEmployeeResponse, PublicEmployeeResponse {
     long id();

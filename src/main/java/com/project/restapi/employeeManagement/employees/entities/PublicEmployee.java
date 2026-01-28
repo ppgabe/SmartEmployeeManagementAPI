@@ -1,4 +1,4 @@
-package com.project.restapi.employeeManagement.entity;
+package com.project.restapi.employeeManagement.employees.entities;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;

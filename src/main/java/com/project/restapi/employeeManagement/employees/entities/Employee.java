@@ -1,6 +1,6 @@
-package com.project.restapi.employeeManagement.entity;
+package com.project.restapi.employeeManagement.employees.entities;
 
-import com.project.restapi.employeeManagement.exceptions.InvalidAgeException;
+import com.project.restapi.employeeManagement.employees.exceptions.InvalidAgeException;
 import jakarta.persistence.*;
 
 @Entity

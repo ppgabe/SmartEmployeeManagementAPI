@@ -1,10 +1,11 @@
-package com.project.restapi.employeeManagement.controller;
+package com.project.restapi.employeeManagement.employees;
 
-import com.project.restapi.employeeManagement.dto.request.*;
-import com.project.restapi.employeeManagement.dto.response.EmployeeResponse;
-import com.project.restapi.employeeManagement.service.EmployeeService;
+import com.project.restapi.employeeManagement.employees.dto.request.AdminCreateRequest;
+import com.project.restapi.employeeManagement.employees.dto.request.AdminUpdateEmployeeRequest;
+import com.project.restapi.employeeManagement.employees.dto.request.PublicEmployeeCreateRequest;
+import com.project.restapi.employeeManagement.employees.dto.request.PublicEmployeeUpdateRequest;
+import com.project.restapi.employeeManagement.employees.dto.response.EmployeeResponse;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

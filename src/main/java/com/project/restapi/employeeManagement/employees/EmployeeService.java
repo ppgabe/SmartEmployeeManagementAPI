@@ -1,15 +1,15 @@
-package com.project.restapi.employeeManagement.service;
+package com.project.restapi.employeeManagement.employees;
 
-import com.project.restapi.employeeManagement.dto.request.*;
-import com.project.restapi.employeeManagement.dto.response.AdminEmployeeResponse;
-import com.project.restapi.employeeManagement.dto.response.EmployeeResponse;
-import com.project.restapi.employeeManagement.dto.response.PublicEmployeeResponse;
-import com.project.restapi.employeeManagement.entity.AdminEmployee;
-import com.project.restapi.employeeManagement.entity.Employee;
-import com.project.restapi.employeeManagement.entity.PublicEmployee;
-import com.project.restapi.employeeManagement.repository.EmployeeRepository;
-import com.project.restapi.employeeManagement.exceptions.EmailAlreadyExistsException;
-import com.project.restapi.employeeManagement.exceptions.ResourceNotFoundException;
+import com.project.restapi.employeeManagement.employees.dto.request.EmployeeCreateRequest;
+import com.project.restapi.employeeManagement.employees.dto.request.EmployeeUpdateRequest;
+import com.project.restapi.employeeManagement.employees.dto.response.AdminEmployeeResponse;
+import com.project.restapi.employeeManagement.employees.dto.response.EmployeeResponse;
+import com.project.restapi.employeeManagement.employees.dto.response.PublicEmployeeResponse;
+import com.project.restapi.employeeManagement.employees.entities.AdminEmployee;
+import com.project.restapi.employeeManagement.employees.entities.Employee;
+import com.project.restapi.employeeManagement.employees.entities.PublicEmployee;
+import com.project.restapi.employeeManagement.employees.exceptions.EmailAlreadyExistsException;
+import com.project.restapi.employeeManagement.shared.exceptions.ResourceNotFoundException;
 import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

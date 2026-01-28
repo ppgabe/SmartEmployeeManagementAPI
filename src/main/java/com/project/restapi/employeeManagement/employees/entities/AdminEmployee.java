@@ -1,6 +1,6 @@
-package com.project.restapi.employeeManagement.entity;
+package com.project.restapi.employeeManagement.employees.entities;
 
-import com.project.restapi.employeeManagement.exceptions.InvalidSalaryException;
+import com.project.restapi.employeeManagement.employees.exceptions.InvalidSalaryException;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 

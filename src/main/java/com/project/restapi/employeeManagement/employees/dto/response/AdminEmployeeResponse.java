@@ -1,6 +1,6 @@
-package com.project.restapi.employeeManagement.dto.response;
+package com.project.restapi.employeeManagement.employees.dto.response;
 
-import com.project.restapi.employeeManagement.entity.AdminEmployee;
+import com.project.restapi.employeeManagement.employees.entities.AdminEmployee;
 
 public record AdminEmployeeResponse(
     long id,
