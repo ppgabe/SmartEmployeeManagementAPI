@@ -1,9 +1,9 @@
 package com.project.restapi.employeeManagement.service;
 
-import com.project.restapi.employeeManagement.dto.request.AdminCreateEmployeeRequest;
+import com.project.restapi.employeeManagement.dto.request.AdminCreateRequest;
 import com.project.restapi.employeeManagement.dto.request.AdminUpdateEmployeeRequest;
 import com.project.restapi.employeeManagement.dto.mapper.EmployeeMapper;
-import com.project.restapi.employeeManagement.dto.request.PublicCreateEmployeeRequest;
+import com.project.restapi.employeeManagement.dto.request.PublicEmployeeCreateRequest;
 import com.project.restapi.employeeManagement.dto.request.PublicUpdateEmployeeRequest;
 import com.project.restapi.employeeManagement.dto.response.AdminEmployeeResponse;
 import com.project.restapi.employeeManagement.dto.response.PublicEmployeeResponse;
@@ -40,8 +40,8 @@ public class EmployeeService {
     }
 
     //@Admin Methods
-    public AdminEmployeeResponse createEmployee_Admin(AdminCreateEmployeeRequest createRequest) {
-        if (empRepository.existsEmpByEmail(createRequest.getEmail())) {
+    public AdminEmployeeResponse createEmployee_Admin(AdminCreateRequest createRequest) {
+        if (empRepository.existsEmpByEmail(createRequest.email())) {
             throw new EmailAlreadyExistsException("Email already exists.");
         }
 
@@ -52,9 +52,9 @@ public class EmployeeService {
 
     //Bulk
     @Transactional
-    public List<AdminEmployeeResponse> createEmployee_AdminBulk(List<AdminCreateEmployeeRequest> createRequest) {
+    public List<AdminEmployeeResponse> createEmployee_AdminBulk(List<AdminCreateRequest> createRequest) {
 
-        if (empRepository.existsEmpByEmail(createRequest.getFirst().getEmail())) {
+        if (empRepository.existsEmpByEmail(createRequest.getFirst().email())) {
             throw new EmailAlreadyExistsException("Email already exists.");
         }
 
@@ -82,8 +82,8 @@ public class EmployeeService {
 
         Employee employee = getEmployeeById(id);
 
-        if (!employee.getEmail().equals(updateRequest.getEmail()) &&
-                empRepository.existsEmpByEmail(updateRequest.getEmail())) {
+        if (!employee.getEmail().equals(updateRequest.email()) &&
+                empRepository.existsEmpByEmail(updateRequest.email())) {
             throw new EmailAlreadyExistsException("Email already exists.");
         }
 
@@ -104,8 +104,8 @@ public class EmployeeService {
     }
 
     //@Public Methods
-    public PublicEmployeeResponse createEmployee_Public(PublicCreateEmployeeRequest publicCreateRequest) {
-        if (empRepository.existsEmpByEmail(publicCreateRequest.getEmail())) {
+    public PublicEmployeeResponse createEmployee_Public(PublicEmployeeCreateRequest publicCreateRequest) {
+        if (empRepository.existsEmpByEmail(publicCreateRequest.email())) {
             throw new  EmailAlreadyExistsException("Email already exists.");
         }
 

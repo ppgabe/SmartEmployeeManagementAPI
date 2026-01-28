@@ -1,8 +1,8 @@
 package com.project.restapi.employeeManagement.dto.mapper;
 
-import com.project.restapi.employeeManagement.dto.request.AdminCreateEmployeeRequest;
+import com.project.restapi.employeeManagement.dto.request.AdminCreateRequest;
 import com.project.restapi.employeeManagement.dto.request.AdminUpdateEmployeeRequest;
-import com.project.restapi.employeeManagement.dto.request.PublicCreateEmployeeRequest;
+import com.project.restapi.employeeManagement.dto.request.PublicEmployeeCreateRequest;
 import com.project.restapi.employeeManagement.dto.request.PublicUpdateEmployeeRequest;
 import com.project.restapi.employeeManagement.dto.response.AdminEmployeeResponse;
 import com.project.restapi.employeeManagement.dto.response.PublicEmployeeResponse;
@@ -13,29 +13,29 @@ import java.util.List;
 public class EmployeeMapper {
 
     //@ADMIN
-    public static Employee AdminFromCreateRequest(AdminCreateEmployeeRequest req) {
+    public static Employee AdminFromCreateRequest(AdminCreateRequest req) {
          return new Employee()
-                .setName(req.getName())
-                .setEmail(req.getEmail())
-                .setAge(req.getAge())
-                .setSalary(req.getSalary())
-                .setIfActive(req.active())
-                .setPosition(req.getPosition());
+                .setName(req.name())
+                .setEmail(req.email())
+                .setAge(req.age())
+                .setSalary(req.salary())
+                .setIfActive(req.isActive())
+                .setPosition(req.position());
     }
 
-    public static List<Employee> AdminFromCreateRequestList(List<AdminCreateEmployeeRequest> req) {
+    public static List<Employee> AdminFromCreateRequestList(List<AdminCreateRequest> req) {
         return req.stream()
                 .map(EmployeeMapper::AdminFromCreateRequest)
                 .toList();
     }
 
     public static Employee AdminFromUpdateRequest(Employee emp, AdminUpdateEmployeeRequest req) {
-        emp.setSalary(req.getSalary())
-                .setName(req.getName())
-                .setEmail(req.getEmail())
-                .setAge(req.getAge())
-                .setPosition(req.getPosition())
-                .setIfActive(req.active());
+        emp.setSalary(req.salary())
+                .setName(req.name())
+                .setEmail(req.email())
+                .setAge(req.age())
+                .setPosition(req.position())
+                .setIfActive(req.isActive());
         return emp;
     }
 
@@ -52,12 +52,12 @@ public class EmployeeMapper {
 
 
     //@PUBLIC
-    public static Employee publicFromCreateRequest(PublicCreateEmployeeRequest publicCreateRequest) {
+    public static Employee publicFromCreateRequest(PublicEmployeeCreateRequest publicCreateRequest) {
         return new Employee()
-                .setName(publicCreateRequest.getName())
-                .setEmail(publicCreateRequest.getEmail())
-                .setAge(publicCreateRequest.getAge())
-                .setPosition(publicCreateRequest.getPosition());
+                .setName(publicCreateRequest.name())
+                .setEmail(publicCreateRequest.email())
+                .setAge(publicCreateRequest.age())
+                .setPosition(publicCreateRequest.position());
     }
 
     public static Employee publicFromUpdateRequest(Employee emp, PublicUpdateEmployeeRequest req) {

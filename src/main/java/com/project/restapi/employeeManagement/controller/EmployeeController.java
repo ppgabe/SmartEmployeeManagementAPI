@@ -1,8 +1,8 @@
 package com.project.restapi.employeeManagement.controller;
 
-import com.project.restapi.employeeManagement.dto.request.AdminCreateEmployeeRequest;
+import com.project.restapi.employeeManagement.dto.request.AdminCreateRequest;
 import com.project.restapi.employeeManagement.dto.request.AdminUpdateEmployeeRequest;
-import com.project.restapi.employeeManagement.dto.request.PublicCreateEmployeeRequest;
+import com.project.restapi.employeeManagement.dto.request.PublicEmployeeCreateRequest;
 import com.project.restapi.employeeManagement.dto.request.PublicUpdateEmployeeRequest;
 import com.project.restapi.employeeManagement.dto.response.AdminEmployeeResponse;
 import com.project.restapi.employeeManagement.dto.response.PublicEmployeeResponse;
@@ -27,12 +27,12 @@ public class EmployeeController {
 
     //Admin Endpoints
     @PostMapping("/admin")
-    public AdminEmployeeResponse createEmployee(@Valid @RequestBody AdminCreateEmployeeRequest adminCreateRequest) {
+    public AdminEmployeeResponse createEmployee(@Valid @RequestBody AdminCreateRequest adminCreateRequest) {
         return empService.createEmployee_Admin(adminCreateRequest);
     }
 
     @PostMapping("/admin/bulk")
-    public List<AdminEmployeeResponse> createEmployeesBulk(@Valid @RequestBody List<AdminCreateEmployeeRequest> adminCreateRequests) {
+    public List<AdminEmployeeResponse> createEmployeesBulk(@Valid @RequestBody List<AdminCreateRequest> adminCreateRequests) {
         return empService.createEmployee_AdminBulk(adminCreateRequests);
     }
     @GetMapping("/admin/{id}")
@@ -58,7 +58,7 @@ public class EmployeeController {
 
     //Public Endpoints
     @PostMapping("/public")
-    public PublicEmployeeResponse createEmployee(@Valid @RequestBody PublicCreateEmployeeRequest publicCreateRequest) {
+    public PublicEmployeeResponse createEmployee(@Valid @RequestBody PublicEmployeeCreateRequest publicCreateRequest) {
         return empService.createEmployee_Public(publicCreateRequest);
     }
 
