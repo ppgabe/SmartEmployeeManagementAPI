@@ -47,6 +47,7 @@ public class EmployeeController {
         return employeeService.bulkCreateEmployees(adminCreateRequests);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PatchMapping("/admin/update/{id}")
     public EmployeeResponse updateAdminEmployee(@PathVariable long id, @Valid @RequestBody AdminUpdateEmployeeRequest updatingRequest) {
         return employeeService.updateEmployee(id, updatingRequest);
@@ -59,12 +60,13 @@ public class EmployeeController {
     }
 
     //Public Endpoints
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/public")
     public EmployeeResponse createPublicEmployee(@Valid @RequestBody PublicEmployeeCreateRequest publicCreateRequest) {
         return employeeService.createEmployee(publicCreateRequest);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PatchMapping("/public/update/{id}")
     public EmployeeResponse updatePublicEmployee(@PathVariable long id, @Valid @RequestBody PublicEmployeeUpdateRequest publicUpdateRequest) {
         return employeeService.updateEmployee(id, publicUpdateRequest);
