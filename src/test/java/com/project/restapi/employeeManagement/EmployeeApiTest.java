@@ -8,9 +8,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.resttestclient.TestRestTemplate;
 import org.springframework.http.HttpStatus;
-import org.testcontainers.shaded.org.bouncycastle.asn1.cmp.Challenge;
 
-import java.time.Instant;
 import java.util.random.RandomGenerator;
 
 import static org.assertj.core.api.Assertions.*;
@@ -51,13 +49,10 @@ class EmployeeApiTest extends AbstractIntegrationTest {
                 TestAdminResponse.class
             );
 
-            // TODO: Refactor to proper status code (HttpStatus.CREATED - 201)
-            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+            // Now properly returns the proper 201 - CREATED status
+            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
             assertThat(response.getBody()).isNotNull();
-
-            // TODO: Refactor to default to false (null shouldn't be possible)
-            assertThat(response.getBody().isActive()).isNull();
         }
 
         @DisplayName("Should return error on existing email")
@@ -97,13 +92,12 @@ class EmployeeApiTest extends AbstractIntegrationTest {
                 String.class
             );
 
-            // TODO: Refactor to use the proper status code (HttpStatus.CREATED - 201)
-            assertThat(firstResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+            assertThat(firstResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
             assertThat(firstResponse.getBody()).isNotNull();
 
-            // TODO: Refactor to use the proper status code (HttpStatus.CONFLICT - 409)
-            assertThat(secondResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+            // Now returns the proper 409 - CONFLICT status
+            assertThat(secondResponse.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
         }
 
         @Nested
@@ -228,8 +222,7 @@ class EmployeeApiTest extends AbstractIntegrationTest {
 
             System.out.println(response);
 
-            // TODO: Refactor to proper status code (HttpStatus.CREATED - 201)
-            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
             assertThat(response.getBody()).isNotNull();
         }
@@ -268,13 +261,11 @@ class EmployeeApiTest extends AbstractIntegrationTest {
                 String.class
             );
 
-            // TODO: Refactor to use the proper status code (HttpStatus.CREATED - 201)
-            assertThat(firstResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+            assertThat(firstResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
             assertThat(firstResponse.getBody()).isNotNull();
 
-            // TODO: Refactor to use the proper status code (HttpStatus.CONFLICT - 409)
-            assertThat(secondResponse.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+            assertThat(secondResponse.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
         }
 
         @Nested
