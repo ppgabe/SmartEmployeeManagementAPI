@@ -1,0 +1,15 @@
+spring:
+    application:
+        name: smart-employee-management-api
+    jackson:
+        serialization:
+            indent-output: true
+    datasource:
+        username: "${DB_USERNAME}"
+        url: "${DB_URL}"
+        password: "${DB_PASSWORD}"
+    jpa:
+        hibernate:
+            ddl-auto: update
+        open-in-view: false
+        show-sql: true
