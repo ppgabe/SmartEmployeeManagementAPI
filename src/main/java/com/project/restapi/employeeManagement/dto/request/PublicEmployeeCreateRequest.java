@@ -1,33 +1,28 @@
 package com.project.restapi.employeeManagement.dto.request;
 
-import com.project.restapi.employeeManagement.entity.AdminEmployee;
 import com.project.restapi.employeeManagement.entity.Employee;
-import jakarta.validation.constraints.DecimalMin;
+import com.project.restapi.employeeManagement.entity.PublicEmployee;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
-public record AdminUpdateEmployeeRequest(
+public record PublicEmployeeCreateRequest(
     @NotBlank(message = "Name must not be blank")
     String name,
 
     @Min(value = 18, message = "Age must be greater or equal to 18")
     int age,
 
-    @NotBlank(message = "Position must not be blank")
-    String position,
-
     @Email(message = "Email must be valid")
     @NotBlank(message = "Email must not be blank")
     String email,
 
-    @DecimalMin(inclusive = false, value = "0.0")
-    double salary,
+    @NotBlank(message = "Position must not be blank")
+    String position
+) implements EmployeeCreateRequest {
 
-    boolean isActive
-) implements EmployeeUpdateRequest {
     @Override
-    public AdminEmployee toEntity() {
-        return new AdminEmployee(name, email, age, position, salary, isActive);
+    public PublicEmployee toEntity() {
+        return new PublicEmployee(name, email, age, position);
     }
 }

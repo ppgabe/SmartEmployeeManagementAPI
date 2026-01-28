@@ -1,15 +1,12 @@
 package com.project.restapi.employeeManagement.controller;
 
-import com.project.restapi.employeeManagement.dto.request.AdminCreateEmployeeRequest;
-import com.project.restapi.employeeManagement.dto.request.AdminUpdateEmployeeRequest;
-import com.project.restapi.employeeManagement.dto.request.PublicCreateEmployeeRequest;
-import com.project.restapi.employeeManagement.dto.request.PublicUpdateEmployeeRequest;
-import com.project.restapi.employeeManagement.dto.response.AdminEmployeeResponse;
-import com.project.restapi.employeeManagement.dto.response.PublicEmployeeResponse;
+import com.project.restapi.employeeManagement.dto.request.*;
+import com.project.restapi.employeeManagement.dto.response.EmployeeResponse;
 import com.project.restapi.employeeManagement.service.EmployeeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,57 +15,66 @@ import java.util.List;
 @RequestMapping("/employee")
 public class EmployeeController {
 
-    private final EmployeeService empService;
+    private final EmployeeService employeeService;
 
     @Autowired
-    public EmployeeController(EmployeeService empService) {
-        this.empService = empService;
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
     }
 
-    //Admin Endpoints
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping()
+    public Page<EmployeeResponse> getAllEmployees(@RequestParam(defaultValue = "0") int page,
+                                                  @RequestParam(defaultValue = "10") int size) {
+        return employeeService.getAllEmployees(page, size);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{id}")
+    public EmployeeResponse findEmployeeById(@PathVariable long id) {
+        return employeeService.getEmployeeById(id);
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/admin")
-    public AdminEmployeeResponse createEmployee(@Valid @RequestBody AdminCreateEmployeeRequest adminCreateRequest) {
-        return empService.createEmployee_Admin(adminCreateRequest);
+    public EmployeeResponse createAdminEmployee(@Valid @RequestBody AdminCreateRequest adminCreateRequest) {
+        return employeeService.createEmployee(adminCreateRequest);
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/admin/bulk")
-    public List<AdminEmployeeResponse> createEmployeesBulk(@Valid @RequestBody List<AdminCreateEmployeeRequest> adminCreateRequests) {
-        return empService.createEmployee_AdminBulk(adminCreateRequests);
-    }
-    @GetMapping("/admin/{id}")
-    public AdminEmployeeResponse findEmpById(@PathVariable Long id) {
-        return empService.getEmployeeById_Admin(id);
+    public List<EmployeeResponse> bulkCreateAdminEmployees(@Valid @RequestBody List<AdminCreateRequest> adminCreateRequests) {
+        return employeeService.bulkCreateEmployees(adminCreateRequests);
     }
 
-    @GetMapping("/admin")
-    public Page<AdminEmployeeResponse> getAllEmployees(@RequestParam(defaultValue = "0") int page,
-                                                       @RequestParam(defaultValue = "10") int size) {
-        return empService.getAllEmployees(page, size);
-    }
-
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PatchMapping("/admin/update/{id}")
-    public AdminEmployeeResponse updateEmployee(@PathVariable Long id, @Valid @RequestBody AdminUpdateEmployeeRequest updatingRequest) {
-        return empService.updateEmployee_Admin(id, updatingRequest);
+    public EmployeeResponse updateAdminEmployee(@PathVariable long id, @Valid @RequestBody AdminUpdateEmployeeRequest updatingRequest) {
+        return employeeService.updateEmployee(id, updatingRequest);
     }
 
-    @DeleteMapping("/admin/delete/{id}")
-    public AdminEmployeeResponse deleteEmployee(@PathVariable Long id) {
-        return empService.deleteEmployee(id);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/employee/{id}")
+    public void deleteEmployee(@PathVariable long id) {
+        employeeService.deleteEmployee(id);
     }
 
     //Public Endpoints
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/public")
-    public PublicEmployeeResponse createEmployee(@Valid @RequestBody PublicCreateEmployeeRequest publicCreateRequest) {
-        return empService.createEmployee_Public(publicCreateRequest);
+    public EmployeeResponse createPublicEmployee(@Valid @RequestBody PublicEmployeeCreateRequest publicCreateRequest) {
+        return employeeService.createEmployee(publicCreateRequest);
     }
 
-    @GetMapping("/public/{id}")
-    public PublicEmployeeResponse findEmployeeById(@PathVariable Long id) {
-        return empService.getEmployeeById_Public(id);
-    }
-
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PatchMapping("/public/update/{id}")
-    public PublicEmployeeResponse updateEmployee(@PathVariable Long id, @Valid @RequestBody PublicUpdateEmployeeRequest publicUpdateRequest) {
-        return empService.updateEmployee_Public(id, publicUpdateRequest);
+    public EmployeeResponse updatePublicEmployee(@PathVariable long id, @Valid @RequestBody PublicEmployeeUpdateRequest publicUpdateRequest) {
+        return employeeService.updateEmployee(id, publicUpdateRequest);
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/public/bulk")
+    public List<EmployeeResponse> bulkCreatePublicEmployees(@Valid @RequestBody List<PublicEmployeeCreateRequest> publicCreateRequests) {
+        return employeeService.bulkCreateEmployees(publicCreateRequests);
     }
 }
