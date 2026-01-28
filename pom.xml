@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>dev.ailuruslabs</groupId>
-    <artifactId>SmartEmployeeManagementAPI</artifactId>
+    <artifactId>ModernEmployeeManagementAPI</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>SmartEmployeeManagementAPI</name>
-    <description>The SmartEmployeeManagement API, based off clementejb-jibe's project.</description>
+    <name>ModernEmployeeManagementAPI</name>
+    <description>The ModernEmployeeManagement API, based off clementejb-jibe's project.</description>
 
     <properties>
         <java.version>21</java.version>

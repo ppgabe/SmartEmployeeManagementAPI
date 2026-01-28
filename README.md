@@ -1,4 +1,4 @@
-# Smart Employee Management API
+# *Modern* Employee Management API
 _Forked by Gabriel Virrey (GitHub/ppgabe) of AilurusLabs_
 
 This project is a simple Employee Management API built with Spring Boot and Spring Data JPA. It allows basic operations for managing employee records.
@@ -47,7 +47,7 @@ datasource:
 ```
 
 Alternatively, configure the run configuration of your IDE to set active profiles to `local`, and then run the
-main class (`SmartEmployeeManagementApiApplication`).
+main class (`ModernEmployeeManagementApiApplication`).
 
 ## License
 
