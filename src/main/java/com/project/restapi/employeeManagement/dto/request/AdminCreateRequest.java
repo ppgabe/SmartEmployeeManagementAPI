@@ -6,20 +6,20 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
 public record AdminCreateRequest(
-    @NotBlank(message = "Name is required!")
+    @NotBlank(message = "Name must not be blank")
     String name,
 
-    @Min(value = 18) // Jakarta validation for minimum value. Errors at the edges!
+    @Min(value = 18, message = "Age must be greater or equal to 18") // Jakarta validation for minimum value. Errors at the edges!
     int age,
 
-    @NotBlank(message = "Position is required!")
+    @NotBlank(message = "Position must not be blank")
     String position,
 
     @DecimalMin(inclusive = false, value = "0.0")
     double salary,  // No need to use the Double wrapper class
 
-    @Email(message = "Email must be valid!")
-    @NotBlank(message = "Email is required!")
+    @Email(message = "Email must be valid")
+    @NotBlank(message = "Email must not be blank")
     String email,
 
     boolean isActive
