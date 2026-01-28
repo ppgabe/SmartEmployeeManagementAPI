@@ -34,4 +34,5 @@ build/
 application-local.properties
 .env
 
-
+### Local application configuration
+/src/main/resources/application-local.yml
