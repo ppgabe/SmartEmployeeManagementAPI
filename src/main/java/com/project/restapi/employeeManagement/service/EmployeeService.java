@@ -9,7 +9,7 @@ import com.project.restapi.employeeManagement.entity.Employee;
 import com.project.restapi.employeeManagement.entity.PublicEmployee;
 import com.project.restapi.employeeManagement.repository.EmployeeRepository;
 import com.project.restapi.employeeManagement.exceptions.EmailAlreadyExistsException;
-import com.project.restapi.employeeManagement.exceptions.ResourcesNotFoundException;
+import com.project.restapi.employeeManagement.exceptions.ResourceNotFoundException;
 import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -38,7 +38,7 @@ public class EmployeeService {
 
     private Employee getEmployeeEntityById(long id) {
         return employeeRepository.findEmployeeById(id)
-            .orElseThrow(() -> new ResourcesNotFoundException("Employee not found in id: " + id));
+            .orElseThrow(() -> new ResourceNotFoundException("Employee not found in id: " + id));
     }
 
     private EmployeeResponse createEmployeeResponse(Employee employee) {
