@@ -1,5 +1,7 @@
 package com.project.restapi.employeeManagement.dto.request;
 
+import com.project.restapi.employeeManagement.entity.Employee;
+import com.project.restapi.employeeManagement.entity.PublicEmployee;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -17,4 +19,10 @@ public record PublicEmployeeCreateRequest(
 
     @NotBlank(message = "Position must not be blank")
     String position
-) implements EmployeeCreateRequest {}
+) implements EmployeeCreateRequest {
+
+    @Override
+    public PublicEmployee toEntity() {
+        return new PublicEmployee(name, email, age, position);
+    }
+}

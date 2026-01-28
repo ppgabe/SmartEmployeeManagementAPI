@@ -1,46 +1,39 @@
 package com.project.restapi.employeeManagement.entity;
 
 import com.project.restapi.employeeManagement.exceptions.InvalidAgeException;
-import com.project.restapi.employeeManagement.exceptions.InvalidSalaryException;
 import jakarta.persistence.*;
-import org.springframework.context.annotation.Configuration;
 
 @Entity
-@Table(name = "employee")
-public class Employee {
+@Table(name = "employees")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "role")
+public abstract class Employee {
+
+    public static final String ADMIN_DISCRIMINATOR = "ADMIN";
+    public static final String PUBLIC_DISCRIMINATOR = "PUBLIC";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    private long id;
 
     private String name;
 
-    @Column(name = "employee_Email", unique = true)
+    @Column(name = "email", unique = true)
     private String email;
-
 
     private int age;
 
-
-    private Double salary;
-
-
     private String position;
+    public Employee() {}
 
-    private boolean isActive;
-
-
-    public boolean isActive() {
-        return isActive;
+    public Employee(String name, String email, int age, String position) {
+        this.name = name;
+        this.email = email;
+        this.age = age;
+        this.position = position;
     }
 
-    public Employee setIfActive(boolean isActive) {
-        this.isActive = isActive;
-        return this;
-    }
-
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
@@ -52,58 +45,35 @@ public class Employee {
         return name;
     }
 
-    public Employee setName(String name) {
+    public void setName(String name) {
         this.name = name;
-        return this;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public Employee setEmail(String email) {
+    public void setEmail(String email) {
         this.email = email;
-        return this;
     }
 
     public int getAge() {
         return age;
     }
 
-    public Employee setAge(int age) {
+    public void setAge(int age) {
         this.age = age;
 
         if (age < 18) {
             throw new InvalidAgeException("Age must be above 18.");
         }
-
-        if (age >= 60) {
-            this.isActive = false;
-        }
-
-        return this;
-    }
-
-    public Double getSalary() {
-        return salary;
-    }
-
-    public Employee setSalary(Double salary) {
-        this.salary = salary;
-
-        if (salary <= 0) {
-            throw new InvalidSalaryException("Salary must be above 0.");
-        }
-
-        return this;
     }
 
     public String getPosition() {
         return position;
     }
 
-    public Employee setPosition(String position) {
+    public void setPosition(String position) {
         this.position = position;
-        return this;
     }
 }

@@ -1,5 +1,7 @@
 package com.project.restapi.employeeManagement.dto.request;
 
+import com.project.restapi.employeeManagement.entity.AdminEmployee;
+import com.project.restapi.employeeManagement.entity.Employee;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
@@ -23,5 +25,9 @@ public record AdminUpdateEmployeeRequest(
     double salary,
 
     boolean isActive
-) {
+) implements EmployeeUpdateRequest {
+    @Override
+    public AdminEmployee toEntity() {
+        return new AdminEmployee(name, email, age, position, salary, isActive);
+    }
 }

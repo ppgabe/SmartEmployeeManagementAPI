@@ -1,54 +1,22 @@
 package com.project.restapi.employeeManagement.dto.response;
 
-public class PublicEmployeeResponse {
-    private Long id;
-    private String name;
-    private String email;
-    private int age;
-    private String position;
+import com.project.restapi.employeeManagement.entity.PublicEmployee;
 
-    public Long getId() {
-        return id;
-    }
+public record PublicEmployeeResponse(
+    long id,
+    String name,
+    String email,
+    int age,
+    String position
+) implements EmployeeResponse {
 
-    public PublicEmployeeResponse setId(Long id) {
-        this.id = id;
-        return this;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public PublicEmployeeResponse setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public PublicEmployeeResponse setEmail(String email) {
-        this.email = email;
-        return this;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public PublicEmployeeResponse setAge(int age) {
-        this.age = age;
-        return this;
-    }
-
-    public String getPosition() {
-        return position;
-    }
-
-    public PublicEmployeeResponse setPosition(String position) {
-        this.position = position;
-        return this;
+    public static PublicEmployeeResponse fromEntity(PublicEmployee publicEmployee) {
+        return new PublicEmployeeResponse(
+            publicEmployee.getId(),
+            publicEmployee.getName(),
+            publicEmployee.getEmail(),
+            publicEmployee.getAge(),
+            publicEmployee.getPosition()
+        );
     }
 }

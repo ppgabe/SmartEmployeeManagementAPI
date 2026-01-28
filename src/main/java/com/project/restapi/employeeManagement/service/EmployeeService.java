@@ -1,17 +1,16 @@
 package com.project.restapi.employeeManagement.service;
 
-import com.project.restapi.employeeManagement.dto.request.AdminCreateRequest;
-import com.project.restapi.employeeManagement.dto.request.AdminUpdateEmployeeRequest;
-import com.project.restapi.employeeManagement.dto.mapper.EmployeeMapper;
-import com.project.restapi.employeeManagement.dto.request.PublicEmployeeCreateRequest;
-import com.project.restapi.employeeManagement.dto.request.PublicEmployeeUpdateRequest;
+import com.project.restapi.employeeManagement.dto.request.*;
 import com.project.restapi.employeeManagement.dto.response.AdminEmployeeResponse;
+import com.project.restapi.employeeManagement.dto.response.EmployeeResponse;
 import com.project.restapi.employeeManagement.dto.response.PublicEmployeeResponse;
+import com.project.restapi.employeeManagement.entity.AdminEmployee;
 import com.project.restapi.employeeManagement.entity.Employee;
+import com.project.restapi.employeeManagement.entity.PublicEmployee;
 import com.project.restapi.employeeManagement.repository.EmployeeRepository;
 import com.project.restapi.employeeManagement.exceptions.EmailAlreadyExistsException;
 import com.project.restapi.employeeManagement.exceptions.ResourcesNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,119 +18,94 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service
 @Transactional
 public class EmployeeService {
 
-    private final EmployeeRepository empRepository;
+    // You would place @Autowired here, however...
+    private final EmployeeRepository employeeRepository;
 
-    @Autowired
-    public EmployeeService(EmployeeRepository empRepository) {
-        this.empRepository = empRepository;
+    // Constructor injection is the preferred method for DI now.
+    public EmployeeService(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
     }
 
-    //General method to search employee for reusability
-    public Employee getEmployeeById(Long id) {
-        return empRepository.findEmpById(id)
-                .orElseThrow(() -> new ResourcesNotFoundException("Employee not found in id: " + id));
+    public EmployeeResponse getEmployeeById(long id) {
+        return createEmployeeResponse(getEmployeeEntityById(id));
     }
 
-    //@Admin Methods
-    public AdminEmployeeResponse createEmployee_Admin(AdminCreateRequest createRequest) {
-        if (empRepository.existsEmpByEmail(createRequest.email())) {
-            throw new EmailAlreadyExistsException("Email already exists.");
+    private Employee getEmployeeEntityById(long id) {
+        return employeeRepository.findEmployeeById(id)
+            .orElseThrow(() -> new ResourcesNotFoundException("Employee not found in id: " + id));
+    }
+
+    private EmployeeResponse createEmployeeResponse(Employee employee) {
+        Employee unproxiedEmployee = (Employee) Hibernate.unproxy(employee);
+
+        return switch (unproxiedEmployee) {
+            case AdminEmployee acr -> AdminEmployeeResponse.fromEntity(acr);
+            case PublicEmployee pcr -> PublicEmployeeResponse.fromEntity(pcr);
+            case null, default -> throw new IllegalStateException("Employee does not have an implemented Response DTO.");
+        };
+    }
+
+    public EmployeeResponse createEmployee(EmployeeCreateRequest createRequest) {
+        if (employeeRepository.existsEmployeeByEmail(createRequest.email())) {
+            throw new EmailAlreadyExistsException("Email already exists");
         }
 
-        Employee emp = EmployeeMapper.AdminFromCreateRequest(createRequest);
-        Employee saveEmp = empRepository.save(emp);
-        return EmployeeMapper.AdminToResponse(saveEmp);
+        Employee employee = employeeRepository.save(createRequest.toEntity());
+
+        return createEmployeeResponse(employee);
     }
 
     //Bulk
     @Transactional
-    public List<AdminEmployeeResponse> createEmployee_AdminBulk(List<AdminCreateRequest> createRequest) {
+    public List<EmployeeResponse> bulkCreateEmployees(List<? extends EmployeeCreateRequest> createRequests) {
+        createRequests.forEach(req -> {
+            if (employeeRepository.existsEmployeeByEmail(req.email())) {
+                throw new EmailAlreadyExistsException("Email already exists");
+            }
+        });
 
-        if (empRepository.existsEmpByEmail(createRequest.getFirst().email())) {
-            throw new EmailAlreadyExistsException("Email already exists.");
+        return createRequests.stream()
+            .map(EmployeeCreateRequest::toEntity)
+            .map(employeeRepository::save)
+            .map(this::createEmployeeResponse)
+            .toList();
+    }
+
+    public Page<EmployeeResponse> getAllEmployees(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Employee> employeePage = employeeRepository.findAll(pageable);
+        return employeePage.map(this::createEmployeeResponse);
+    }
+
+    public void deleteEmployee(long id) {
+        Employee employeeToDelete = getEmployeeEntityById(id);
+
+        if (employeeToDelete instanceof AdminEmployee admin && admin.isActive()) {
+            throw new IllegalArgumentException("Active employees cannot be deleted.");
         }
 
-        List<Employee> employee = EmployeeMapper.AdminFromCreateRequestList(createRequest);
-        List<Employee> save = empRepository.saveAll(employee);
-
-        return save.stream()
-                .map(EmployeeMapper::AdminToResponse)
-                .collect(Collectors.toList());
+        employeeRepository.deleteById(id);
     }
 
-    public Page<AdminEmployeeResponse> getAllEmployees(int page, int size) {
-        Pageable  pageable = PageRequest.of(page, size);
-        Page<Employee> empPage = empRepository.findAll(pageable);
-        return empPage.map(EmployeeMapper::AdminToResponse);
-    }
+    public EmployeeResponse updateEmployee(long id, EmployeeUpdateRequest updateRequest) {
 
-    public AdminEmployeeResponse getEmployeeById_Admin(Long id) {
-        Employee emp = empRepository.findEmpById(id)
-                .orElseThrow(() -> new ResourcesNotFoundException("Employee not found in id: " + id));
-        return EmployeeMapper.AdminToResponse(emp);
-    }
-
-    public AdminEmployeeResponse updateEmployee_Admin(Long id, AdminUpdateEmployeeRequest updateRequest) {
-
-        Employee employee = getEmployeeById(id);
+        Employee employee = getEmployeeEntityById(id);
 
         if (!employee.getEmail().equals(updateRequest.email()) &&
-                empRepository.existsEmpByEmail(updateRequest.email())) {
+            employeeRepository.existsEmployeeByEmail(updateRequest.email())) {
             throw new EmailAlreadyExistsException("Email already exists.");
         }
 
-        Employee updateEmp = EmployeeMapper.AdminFromUpdateRequest(employee, updateRequest);
-        Employee saveEmp = empRepository.save(updateEmp);
-        return EmployeeMapper.AdminToResponse(saveEmp);
-    }
+        Employee updatedEmployee = employeeRepository.save(updateRequest.toEntity());
 
-    public AdminEmployeeResponse deleteEmployee(Long id) {
-        Employee employee = getEmployeeById(id);
-
-        if (employee.isActive()) {
-            throw new IllegalArgumentException("Active employees  are not allowed to delete.");
-        }
-
-        empRepository.deleteById(id);
-        return EmployeeMapper.AdminToResponse(employee);
-    }
-
-    //@Public Methods
-    public PublicEmployeeResponse createEmployee_Public(PublicEmployeeCreateRequest publicCreateRequest) {
-        if (empRepository.existsEmpByEmail(publicCreateRequest.email())) {
-            throw new  EmailAlreadyExistsException("Email already exists.");
-        }
-
-        Employee employee = EmployeeMapper.publicFromCreateRequest(publicCreateRequest);
-        Employee saveEmp = empRepository.save(employee);
-
-        return EmployeeMapper.publicToResponse(saveEmp);
-    }
-
-    public PublicEmployeeResponse getEmployeeById_Public(Long id) {
-        Employee employee = empRepository.findEmpById(id)
-                .orElseThrow(() -> new ResourcesNotFoundException("Employee not found in id: " + id));
-
-        return EmployeeMapper.publicToResponse(employee);
-    }
-
-    public PublicEmployeeResponse updateEmployee_Public(Long id, PublicEmployeeUpdateRequest publicUpdateRequest) {
-        Employee employee = getEmployeeById(id);
-
-        if (!employee.getEmail().equals(publicUpdateRequest.getEmail())
-        && empRepository.existsEmpByEmail(publicUpdateRequest.getEmail())) {
-            throw new EmailAlreadyExistsException("Email already exists.");
-        }
-
-        Employee updateEmployee = EmployeeMapper.publicFromUpdateRequest(employee, publicUpdateRequest);
-        Employee saveUpdatedEmployee = empRepository.save(updateEmployee);
-        return EmployeeMapper.publicToResponse(saveUpdatedEmployee);
+        return createEmployeeResponse(updatedEmployee);
     }
 }
+
+
