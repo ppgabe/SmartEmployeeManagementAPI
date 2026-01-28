@@ -4,7 +4,7 @@ import com.project.restapi.employeeManagement.dto.request.AdminCreateRequest;
 import com.project.restapi.employeeManagement.dto.request.AdminUpdateEmployeeRequest;
 import com.project.restapi.employeeManagement.dto.mapper.EmployeeMapper;
 import com.project.restapi.employeeManagement.dto.request.PublicEmployeeCreateRequest;
-import com.project.restapi.employeeManagement.dto.request.PublicUpdateEmployeeRequest;
+import com.project.restapi.employeeManagement.dto.request.PublicEmployeeUpdateRequest;
 import com.project.restapi.employeeManagement.dto.response.AdminEmployeeResponse;
 import com.project.restapi.employeeManagement.dto.response.PublicEmployeeResponse;
 import com.project.restapi.employeeManagement.entity.Employee;
@@ -122,7 +122,7 @@ public class EmployeeService {
         return EmployeeMapper.publicToResponse(employee);
     }
 
-    public PublicEmployeeResponse updateEmployee_Public(Long id, PublicUpdateEmployeeRequest publicUpdateRequest) {
+    public PublicEmployeeResponse updateEmployee_Public(Long id, PublicEmployeeUpdateRequest publicUpdateRequest) {
         Employee employee = getEmployeeById(id);
 
         if (!employee.getEmail().equals(publicUpdateRequest.getEmail())

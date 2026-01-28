@@ -3,7 +3,7 @@ package com.project.restapi.employeeManagement.dto.mapper;
 import com.project.restapi.employeeManagement.dto.request.AdminCreateRequest;
 import com.project.restapi.employeeManagement.dto.request.AdminUpdateEmployeeRequest;
 import com.project.restapi.employeeManagement.dto.request.PublicEmployeeCreateRequest;
-import com.project.restapi.employeeManagement.dto.request.PublicUpdateEmployeeRequest;
+import com.project.restapi.employeeManagement.dto.request.PublicEmployeeUpdateRequest;
 import com.project.restapi.employeeManagement.dto.response.AdminEmployeeResponse;
 import com.project.restapi.employeeManagement.dto.response.PublicEmployeeResponse;
 import com.project.restapi.employeeManagement.entity.Employee;
@@ -60,7 +60,7 @@ public class EmployeeMapper {
                 .setPosition(publicCreateRequest.position());
     }
 
-    public static Employee publicFromUpdateRequest(Employee emp, PublicUpdateEmployeeRequest req) {
+    public static Employee publicFromUpdateRequest(Employee emp, PublicEmployeeUpdateRequest req) {
         return emp
                 .setName(req.getName())
                 .setEmail(req.getEmail())

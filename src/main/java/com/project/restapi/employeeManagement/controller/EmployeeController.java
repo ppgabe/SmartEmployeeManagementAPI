@@ -3,7 +3,7 @@ package com.project.restapi.employeeManagement.controller;
 import com.project.restapi.employeeManagement.dto.request.AdminCreateRequest;
 import com.project.restapi.employeeManagement.dto.request.AdminUpdateEmployeeRequest;
 import com.project.restapi.employeeManagement.dto.request.PublicEmployeeCreateRequest;
-import com.project.restapi.employeeManagement.dto.request.PublicUpdateEmployeeRequest;
+import com.project.restapi.employeeManagement.dto.request.PublicEmployeeUpdateRequest;
 import com.project.restapi.employeeManagement.dto.response.AdminEmployeeResponse;
 import com.project.restapi.employeeManagement.dto.response.PublicEmployeeResponse;
 import com.project.restapi.employeeManagement.service.EmployeeService;
@@ -68,7 +68,7 @@ public class EmployeeController {
     }
 
     @PatchMapping("/public/update/{id}")
-    public PublicEmployeeResponse updateEmployee(@PathVariable Long id, @Valid @RequestBody PublicUpdateEmployeeRequest publicUpdateRequest) {
+    public PublicEmployeeResponse updateEmployee(@PathVariable Long id, @Valid @RequestBody PublicEmployeeUpdateRequest publicUpdateRequest) {
         return empService.updateEmployee_Public(id, publicUpdateRequest);
     }
 }
