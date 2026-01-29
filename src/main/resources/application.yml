@@ -1,6 +1,6 @@
 spring:
     application:
-        name: smart-employee-management-api
+        name: modern-employee-management-api
     jackson:
         serialization:
             indent-output: true
@@ -13,3 +13,9 @@ spring:
             ddl-auto: update
         open-in-view: false
         show-sql: true
+    threads:
+        # Probably the most significant feature since Java 21+
+        # Virtual threads!
+        # See: https://pwrteams.com/content-hub/blog/modern-java-unleashed-virtual-threads-other-game-changing-features-in-jdk-21
+        virtual:
+            enabled: true
